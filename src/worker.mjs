@@ -284,6 +284,17 @@ const transformConfig = (req) => {
       cfg[matchedKey] = req[key];
     }
   }
+
+  // >>> 新增代码：如果请求中未指定 max_tokens，则设置一个高默认值 <<<
+  // gemini-2.5-flash 的最大输出限制约为 65536。
+  // 设置 8192 是一个安全且较高的默认值。
+  if (cfg.maxOutputTokens === undefined) {
+    cfg.maxOutputTokens = 8192; 
+  }
+  // >>> 新增代码结束 <<<
+
+  if (req.response_format) {
+// ... 后续代码
   if (req.response_format) {
     switch (req.response_format.type) {
       case "json_schema":
